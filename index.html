@@ -6,10 +6,8 @@
   <script>
     window.onload = function () {
       var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/android/i.test(userAgent)) {
+      if (/android|iPhone|iPad|iPod/i.test(userAgent)) {
         window.location.href = "https://zaloapp.com/qr/p/kuy17ag7s23s?src=qr";
-      } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-        window.location.href = "https://apps.apple.com/app/id579523206";
       } else {
         document.body.innerHTML = "<h2>현재 기기에서는 링크를 열 수 없습니다.</h2>";
       }
