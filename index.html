@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Zalo 자동 이동</title>
+  <script>
+    window.onload = function () {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(userAgent)) {
+        window.location.href = "https://zaloapp.com/qr/p/kuy17ag7s23s?src=qr";
+      } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+        window.location.href = "https://apps.apple.com/app/id579523206";
+      } else {
+        document.body.innerHTML = "<h2>현재 기기에서는 링크를 열 수 없습니다.</h2>";
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>잠시만 기다려 주세요... 자동으로 연결됩니다.</p>
+</body>
+</html>
