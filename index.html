@@ -1,24 +1,47 @@
-<script>
-  window.onload = function () {
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    var zaloLink = "https://zaloapp.com/qr/p/kuy17ag7s23s?src=qr";
-    var zaloCustomScheme = "zalo://qr/p/kuy17ag7s23s"; // 비공식
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Zalo 자동 이동</title>
+  <script>
+    function openZalo() {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      var zaloWebLink = "https://zaloapp.com/qr/p/kuy17ag7s23s?src=qr";
+      var zaloCustomScheme = "zalo://qr/p/kuy17ag7s23s";
 
-    if (/android/i.test(userAgent)) {
-      window.location.href = zaloLink;
-    } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
-      // iOS에서는 딥링크 실패 시 fallback 필요
-      var iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = zaloCustomScheme;
-      document.body.appendChild(iframe);
+      // 안드로이드: 바로 웹 링크 사용 (앱 연결 잘 됨)
+      if (/android/i.test(userAgent)) {
+        window.location.href = zaloWebLink;
+      }
 
-      // 앱이 열리지 않으면 fallback으로 App Store 열기
-      setTimeout(function () {
-        window.location.href = zaloLink; // 기본 웹 링크 (앱스토어로 연결될 가능성 있음)
-      }, 2000);
-    } else {
-      document.body.innerHTML = "<h2>현재 기기에서는 링크를 열 수 없습니다.</h2>";
+      // 아이폰: iframe으로 앱 시도 → 실패하면 2초 후 웹 링크 (앱스토어 fallback)
+      else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+        const now = new Date().getTime();
+        setTimeout(function () {
+          const later = new Date().getTime();
+          if (later - now < 2200) {
+            // 앱이 안 열림 → 앱스토어 fallback
+            window.location.href = zaloWebLink;
+          }
+        }, 1500);
+
+        // 앱 열기 시도
+        const iframe = document.createElement("iframe");
+        iframe.style.display = "none";
+        iframe.src = zaloCustomScheme;
+        document.body.appendChild(iframe);
+      }
+
+      // 기타 기기
+      else {
+        document.body.innerHTML = "<h2>현재 기기에서는 지원되지 않습니다.</h2>";
+      }
     }
-  };
-</script>
+
+    window.onload = openZalo;
+  </script>
+</head>
+<body>
+  <p>잠시만 기다려 주세요... Zalo 앱으로 연결 중입니다.</p>
+</body>
+</html>
