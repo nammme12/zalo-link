@@ -1,20 +1,24 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>Zalo 자동 이동</title>
-  <script>
-    window.onload = function () {
-      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/android|iPhone|iPad|iPod/i.test(userAgent)) {
-        window.location.href = "https://zaloapp.com/qr/p/kuy17ag7s23s?src=qr";
-      } else {
-        document.body.innerHTML = "<h2>현재 기기에서는 링크를 열 수 없습니다.</h2>";
-      }
-    };
-  </script>
-</head>
-<body>
-  <p>잠시만 기다려 주세요... 자동으로 연결됩니다.</p>
-</body>
-</html>
+<script>
+  window.onload = function () {
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    var zaloLink = "https://zaloapp.com/qr/p/kuy17ag7s23s?src=qr";
+    var zaloCustomScheme = "zalo://qr/p/kuy17ag7s23s"; // 비공식
+
+    if (/android/i.test(userAgent)) {
+      window.location.href = zaloLink;
+    } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+      // iOS에서는 딥링크 실패 시 fallback 필요
+      var iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = zaloCustomScheme;
+      document.body.appendChild(iframe);
+
+      // 앱이 열리지 않으면 fallback으로 App Store 열기
+      setTimeout(function () {
+        window.location.href = zaloLink; // 기본 웹 링크 (앱스토어로 연결될 가능성 있음)
+      }, 2000);
+    } else {
+      document.body.innerHTML = "<h2>현재 기기에서는 링크를 열 수 없습니다.</h2>";
+    }
+  };
+</script>
